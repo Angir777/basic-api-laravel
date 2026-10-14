@@ -1,0 +1,1289 @@
+{
+  "info": {
+    "_postman_id": "e3bff31d-6bf0-40ff-8434-0b54de528f39",
+    "name": "Lesson_Track_API",
+    "description": "Example Laravel API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "19850028"
+  },
+  "item": [
+    {
+      "name": "basic-tests",
+      "item": [
+        {
+          "name": "web",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Access token not empty\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.access_token).is.not.undefined;\r",
+                  "    pm.environment.set(\"api_access_token\", jsonData.access_token);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8000",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000"
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "register",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Access token not empty\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.token).is.not.undefined;\r",
+                  "    pm.environment.set(\"brarer_token\", jsonData.token);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"first_name\": \"Teacher21\",\r\n    \"last_name\": \"Example\",\r\n    \"email\": \"teacher21@app.local\",\r\n    \"password\": \"root123456\",\r\n    \"password_confirmation\": \"root123456\",\r\n    \"acceptance_regulations\": true,\r\n    \"roles\": [\"teacher\"]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/auth/register",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "sendResetPasswordEmail",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"teacher20@app.local\",\r\n    \"gateway_url\": null\r\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/auth/send-reset-password-email",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "auth",
+                "send-reset-password-email"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "resetPassword",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"teacher20@app.local\",\r\n    \"password\": \"root1234567890\",\r\n    \"password_confirmation\": \"root1234567890\",\r\n    \"token\": \"oNARbJi5AGYanG85r4uXxE43lvvwlRHImfBwrI1TsduwLVSKegJ1hQ7B2wQL\"\r\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/auth/reset-password",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "auth",
+                "reset-password"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Access token not empty\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.token).is.not.undefined;\r",
+                  "    pm.environment.set(\"brarer_token\", jsonData.token);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"superadmin@app.local\",\r\n    \"password\": \"root12\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/auth/login",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "confirmAccount",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Access token not empty\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.access_token).is.not.undefined;\r",
+                  "    pm.environment.set(\"api_access_token\", jsonData.access_token);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api_url}}/auth/confirm-account/71d6221dcb9afffb0a942ad76ac43db3",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "auth",
+                "confirm-account",
+                "71d6221dcb9afffb0a942ad76ac43db3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "logout",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true,
+            "disabledSystemHeaders": {}
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"revoke_all\": true\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api_url}}/auth/logout",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "auth",
+                "logout"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getAdminsEmails",
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {}
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/auth/admins-emails",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "auth",
+                "admins-emails"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getCurrentUser",
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {}
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/auth/current-user",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "auth",
+                "current-user"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "user",
+      "item": [
+        {
+          "name": "getAll",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/v1/user/get-all",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "v1",
+                "user",
+                "get-all"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "query",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/v1/user?filter[role]=superadmin",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "v1",
+                "user"
+              ],
+              "query": [
+                {
+                  "key": "filter[role]",
+                  "value": "superadmin"
+                },
+                {
+                  "key": "sort",
+                  "value": "id",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "queryDeleted",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"pageSize\": 2\r\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/v1/user/deleted?filter[id]={{update_user_id}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "v1",
+                "user",
+                "deleted"
+              ],
+              "query": [
+                {
+                  "key": "filter[id]",
+                  "value": "{{update_user_id}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getById",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/v1/user/019cdc04-a8b0-7358-8bb7-7713d19438b8",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "v1",
+                "user",
+                "019cdc04-a8b0-7358-8bb7-7713d19438b8"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"ID not empty\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.id).is.not.undefined;\r",
+                  "    pm.environment.set(\"create_user_id\", jsonData.id);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"first_name\": \"John\",\r\n    \"last_name\": \"Doe\",\r\n    \"email\": \"john.due@app.local\",\r\n    \"roles\": [\"student\"]\r\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/v1/user/",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "v1",
+                "user",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"first_name\": \"John2\",\r\n    \"last_name\": \"Doe2\",\r\n    \"email\": \"john.due2@app.local\",\r\n    \"roles\": [\"teacher\"]\r\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/v1/user/{{create_user_id}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "v1",
+                "user",
+                "{{create_user_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "changePassword",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"password\": \"root1234\",\r\n    \"password_confirmation\": \"root1234\"\r\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/v1/user/{{create_user_id}}/change-password",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "v1",
+                "user",
+                "{{create_user_id}}",
+                "change-password"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/v1/user/{{create_user_id}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "v1",
+                "user",
+                "{{create_user_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "restore",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/v1/user/{{create_user_id}}/restore",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "v1",
+                "user",
+                "{{create_user_id}}",
+                "restore"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "role",
+      "item": [
+        {
+          "name": "getAll",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/v1/role/get-all",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "v1",
+                "role",
+                "get-all"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "query",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/v1/role",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "v1",
+                "role"
+              ],
+              "query": [
+                {
+                  "key": "filter[name]",
+                  "value": "admin",
+                  "disabled": true
+                },
+                {
+                  "key": "sort",
+                  "value": "-id",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getById",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/v1/role/2",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "v1",
+                "role",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"ID not empty\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.id).is.not.undefined;\r",
+                  "    pm.environment.set(\"create_role_id\", jsonData.id);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"NewRole2\",\r\n    \"permissions\": [\r\n        \"USERS_VIEW\",\r\n        \"USERS_CREATE\"\r\n    ]\r\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/v1/role/",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "v1",
+                "role",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"NewRole2B\",\r\n    \"permissions\": [\r\n        \"USERS_VIEW\"\r\n    ]\r\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/v1/role/{{create_role_id}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "v1",
+                "role",
+                "{{create_role_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/v1/role/{{create_role_id}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "v1",
+                "role",
+                "{{create_role_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getPermissions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/v1/role/get-permissions",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "v1",
+                "role",
+                "get-permissions"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "permission",
+      "item": [
+        {
+          "name": "getAll",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/v1/permission/get-all",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "v1",
+                "permission",
+                "get-all"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "query",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/v1/permission?filter[groupName]=ACCESS",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "v1",
+                "permission"
+              ],
+              "query": [
+                {
+                  "key": "filter[groupName]",
+                  "value": "ACCESS"
+                },
+                {
+                  "key": "sort",
+                  "value": "-id",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getById",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/v1/permission/17",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "v1",
+                "permission",
+                "17"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"ID not empty\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.id).is.not.undefined;\r",
+                  "    pm.environment.set(\"create_permission_id\", jsonData.id);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"NewPermission\",\r\n    \"group_name\": \"NewGroupName\"\r\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/v1/permission/",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "v1",
+                "permission",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"NewPermission2\",\r\n    \"group_name\": \"NewGroupName2\"\r\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/v1/permission/{{create_permission_id}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "v1",
+                "permission",
+                "{{create_permission_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{api_url}}/v1/permission/{{create_permission_id}}",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "v1",
+                "permission",
+                "{{create_permission_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "account",
+      "item": [
+        {
+          "name": "changePassword",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"old_password\": \"root12\",\r\n    \"password\": \"root123456\",\r\n    \"password_confirmation\": \"root123456\"\r\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/v1/account/change-password",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "v1",
+                "account",
+                "change-password"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "daleteAccount",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"oldPassword\": \"root12\",\r\n    \"password\": \"root12\",\r\n    \"password_confirmation\": \"root12\"\r\n}"
+            },
+            "url": {
+              "raw": "{{api_url}}/v1/account/delete-account",
+              "host": [
+                "{{api_url}}"
+              ],
+              "path": [
+                "v1",
+                "account",
+                "delete-account"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{brarer_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ]
+}
