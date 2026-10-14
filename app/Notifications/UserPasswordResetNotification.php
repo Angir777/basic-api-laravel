@@ -30,10 +30,11 @@ class UserPasswordResetNotification extends Notification implements ShouldQueue
 
         $gatewayUrl = config('app.gateway_url');
         if ($redirectUrl !== null) {
-            $gatewayUrl = $redirectUrl; // Jeśli przesłany został też URL do APP to używamy go
+            // If an app URL was also provided, we use it.
+            $gatewayUrl = $redirectUrl;
         }
 
-        // Normalizacja URL'a
+        // URL normalization.
         $gatewayUrl = rtrim(config('app.gateway_url'), '/');
 
         if (config('app.gateway_use_hash')) {

@@ -40,15 +40,12 @@ class ResetPasswordController extends Controller
         try {
             $this->resetPasswordService->sendResetPasswordEmail(data: $validated);
 
-            return ResponseUtils::response(
-                data: null,
-                message: 'RESET_PASSWORD_EMAIL_SEND'
-            );
+            return ResponseUtils::response(data: []);
         } catch (ApiException $exception) {
-            // Przechwycenie błędów biznesowych
+            // Catching business errors.
             throw $exception;
         } catch (\Throwable $exception) {
-            // Pozostałe błędy
+            // Other errors.
             Log::error($exception->getMessage(), $exception->getTrace());
             throw new ApiException(
                 message: 'GENERAL_ERROR',
@@ -59,7 +56,7 @@ class ResetPasswordController extends Controller
 
     /**
      * Step 2
-     * The user with an active token (the one sent in the e-mail) can change his current password
+     * The user with an active token (the one sent in the e-mail) can change his current password.
      */
     public function finishPasswordReset(Request $request): JsonResponse
     {
@@ -77,15 +74,12 @@ class ResetPasswordController extends Controller
         try {
             $this->resetPasswordService->finishPasswordReset(data: $validated);
 
-            return ResponseUtils::response(
-                data: null,
-                message: 'PASSWORD_CHANGED'
-            );
+            return ResponseUtils::response(data: []);
         } catch (ApiException $exception) {
-            // Przechwycenie błędów biznesowych
+            // Catching business errors.
             throw $exception;
         } catch (\Throwable $exception) {
-            // Pozostałe błędy
+            // Other errors.
             Log::error($exception->getMessage(), $exception->getTrace());
             throw new ApiException(
                 message: 'GENERAL_ERROR',

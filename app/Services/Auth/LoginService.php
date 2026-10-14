@@ -24,7 +24,7 @@ class LoginService
 
             $user = Auth::user();
 
-            // Zmiana flagi na użytkowniku, który został wylogowany automatycznie i loguje się ponownie
+            // Changing the flag for a user who was automatically logged out and is logging in again.
             if ($user && $user->should_logout_on_next_request == true) {
                 $user->update([
                     'should_logout_on_next_request' => false,
@@ -33,20 +33,17 @@ class LoginService
 
             $user->token = $user->createToken('TokenAPI')->accessToken;
 
-            return ResponseUtils::response(
-                data: new AuthenticatedUserResource($user)
-            );
+            return ResponseUtils::response(data: new AuthenticatedUserResource($user));
         } catch (ApiException $exception) {
-            // Przechwycenie błędów biznesowych
+            // Catching business errors.
             throw $exception;
         } catch (\Throwable $exception) {
-            // Pozostałe błędy
+            // Other errors.
             Log::error($exception->getMessage(), $exception->getTrace());
             throw new ApiException(
                 message: 'GENERAL_ERROR',
                 status: Response::HTTP_INTERNAL_SERVER_ERROR
             );
-
         }
     }
 }

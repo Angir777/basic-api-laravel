@@ -122,7 +122,7 @@ class AccountController extends Controller
 
             Cache::put($cacheKey, true, now()->addHour());
 
-            return ResponseUtils::response(data: ['message' => 'CONFIRMATION_EMAIL_SENT']);
+            return ResponseUtils::response(data: []);
         } catch (\Exception $exception) {
             Log::error($exception->getMessage(), $exception->getTrace());
             throw new ApiException(message: 'CANT_RESEND_CONFIRMATION_EMAIL', status: Response::HTTP_BAD_REQUEST);
@@ -142,7 +142,7 @@ class AccountController extends Controller
             // Delete account
             $user->delete();
 
-            return ResponseUtils::response(data: ['message' => 'ACCOUNT_DELETED'], status: Response::HTTP_OK);
+            return ResponseUtils::response(data: []);
         } catch (\Exception $exception) {
             Log::error($exception->getMessage(), $exception->getTrace());
             throw new ApiException(message: 'CANT_DELETE_ACCOUNT', status: Response::HTTP_BAD_REQUEST);

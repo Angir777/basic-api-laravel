@@ -16,12 +16,11 @@ use Symfony\Component\HttpFoundation\Response;
 class ResetPasswordService
 {
     /**
-     * @param  User  $user
      * @param  mixed  $redirectUrl
      */
-    public function sendResetPasswordEmail(array $data): User
+    public function sendResetPasswordEmail(array $data): void
     {
-        return DB::transaction(function () use ($data) {
+        DB::transaction(function () use ($data) {
             // Redirection address in e-mail.
             $redirectUrl = $data['gatewayUrl'] ?? null;
 
@@ -42,12 +41,10 @@ class ResetPasswordService
             if ($passwordReset) {
                 $user->notify((new UserPasswordResetNotification(user: $user, passwordReset: $passwordReset, redirectUrl: $redirectUrl))->locale(app()->getLocale()));
             }
-
-            return $user;
         });
     }
 
-    public function finishPasswordReset(array $data): User
+    public function finishPasswordReset(array $data): void
     {
         $passwordReset = PasswordReset::where([
             ['token', '=', $data['token']],
@@ -88,7 +85,5 @@ class ResetPasswordService
         }
 
         $passwordReset->delete();
-
-        return $user;
     }
 }

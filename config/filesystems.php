@@ -69,7 +69,7 @@ return [
         ],
 
         /**
-         * Awatary użytkowników
+         * User avatars
          */
         's3usersAvatars' => [
             'driver' => 's3',

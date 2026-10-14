@@ -37,8 +37,9 @@ class RegisterController extends Controller
             'password' => [
                 'required',
                 'string',
-                'confirmed',
+                'confirmed:passwordConfirmation',
                 Rules\Password::defaults(),
+                // Password: minimum 8 characters, at least one uppercase and one lowercase letter, at least one digit, no special character required.
             ],
             'acceptanceRegulations' => ['required', 'boolean'],
             'roles' => ['required', 'array', 'size:1'],
@@ -46,9 +47,9 @@ class RegisterController extends Controller
             'locale' => ['required', Rule::in(['pl', 'es', 'en'])],
         ]);
 
-        // Creating a new user
+        // Creating a new user.
         try {
-            // Check if users can register
+            // Check if users can register.
             if (! config('access.registration')) {
                 throw new ApiException(
                     message: 'REGISTRATION_DISABLED',
@@ -56,7 +57,7 @@ class RegisterController extends Controller
                 );
             }
 
-            // Acceptance regulations
+            // Acceptance regulations.
             if (! $request->boolean('acceptanceRegulations')) {
                 throw new ApiException(
                     message: 'YOU_DONT_ACCEPTANCE_REGULATIONS',
@@ -66,14 +67,12 @@ class RegisterController extends Controller
 
             $data = $this->userService->create(data: $validated);
 
-            return ResponseUtils::response(
-                data: new UserResource($data)
-            );
+            return ResponseUtils::response(data: new UserResource($data));
         } catch (ApiException $exception) {
-            // Przechwycenie błędów biznesowych
+            // Catching business errors.
             throw $exception;
         } catch (\Throwable $exception) {
-            // Pozostałe błędy
+            // Other errors.
             Log::error($exception->getMessage(), $exception->getTrace());
             throw new ApiException(
                 message: 'GENERAL_ERROR',
@@ -90,15 +89,12 @@ class RegisterController extends Controller
         try {
             $this->userService->confirmAccount(confirmationCode: $confirmationCode);
 
-            return ResponseUtils::response(
-                data: null,
-                message: 'CONFIRMED'
-            );
+            return ResponseUtils::response(data: []);
         } catch (ApiException $exception) {
-            // Przechwycenie błędów biznesowych
+            // Catching business errors.
             throw $exception;
         } catch (\Throwable $exception) {
-            // Pozostałe błędy
+            // Other errors.
             Log::error($exception->getMessage(), $exception->getTrace());
             throw new ApiException(
                 message: 'GENERAL_ERROR',

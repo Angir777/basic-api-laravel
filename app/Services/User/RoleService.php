@@ -31,7 +31,7 @@ class RoleService
 
             $role->syncPermissions($permissionIds);
 
-            // Zapis do historii
+            // Entry in the change history.
             $newData = Role::where('id', '=', $role->id)->first();
             event(
                 new RoleChanged(
@@ -74,7 +74,7 @@ class RoleService
 
             $role->syncPermissions($permissionIds);
 
-            // Zapis do historii
+            // Entry in the change history.
             $newData = Role::with('permissions')->where('id', '=', $role->id)->first();
             event(
                 new RoleChanged(
@@ -96,7 +96,7 @@ class RoleService
             $role->syncPermissions([]);
             $role->delete();
 
-            // Zapis do historii
+            // Entry in the change history.
             $newData = null;
             event(
                 new RoleChanged(

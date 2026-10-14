@@ -34,7 +34,7 @@ class AccountService
                 $this->storeUserAvatar($user, $data['avatar']);
             }
 
-            // Zapis do historii
+            // Entry in the change history.
             $newData = User::with('settings')->where('id', '=', $user->id)->first();
             event(
                 new UserChanged(
@@ -71,7 +71,7 @@ class AccountService
             $encoded->toString(),
         );
 
-        // Zapis do historii
+        // Entry in the change history.
         $newData = User::with('settings')->where('id', '=', $user->id)->first();
         $newData->history_comment = 'COMMENT_STORE_AVATAR';
         event(
@@ -94,7 +94,7 @@ class AccountService
             $this->getUserAvatarPath($user),
         );
 
-        // Zapis do historii
+        // Entry in the change history.
         $newData = User::with('settings')->where('id', '=', $user->id)->first();
         $newData->history_comment = 'COMMENT_DELETE_AVATAR';
         event(
@@ -125,7 +125,7 @@ class AccountService
                 throw new Exception('CANT_CHANGE_PASSWORD');
             }
 
-            // Zapis do historii
+            // Entry in the change history.
             $newData = User::with('settings')->where('id', '=', $user->id)->first();
             $newData->history_comment = 'COMMENT_CHANGE_PASSWORD';
             event(
@@ -170,7 +170,7 @@ class AccountService
                 );
             }
 
-            // Zapis do historii
+            // Entry in the change history.
             $newData = User::with('settings')->where('id', '=', $user->id)->first();
             $newData->history_comment = 'COMMENT_CHANGE_SETTINGS';
             event(

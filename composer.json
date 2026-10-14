@@ -3,7 +3,10 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "keywords": [
+        "laravel",
+        "framework"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.2",
@@ -42,8 +45,10 @@
         "setup": [
             "composer install",
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
-            "@php artisan key:generate",
-            "@php artisan migrate --force",
+            "bash -c './vendor/bin/sail up -d'",
+            "bash -c './vendor/bin/sail artisan key:generate'",
+            "bash -c './vendor/bin/sail artisan storage:link'",
+            "bash -c './vendor/bin/sail composer fresh-db'",
             "npm install",
             "npm run build"
         ],

@@ -39,7 +39,7 @@ class UserService
 
         $user->save();
 
-        // Zapis do historii
+        // Entry in the change history.
         $newData = User::with('settings')->where('id', '=', $user->id)->first();
         event(
             new UserChanged(
@@ -55,7 +55,7 @@ class UserService
         return DB::transaction(function () use ($data) {
             $confirmed = $data['confirmed'] ?? ! config('access.confirm_email');
 
-            // Create new user
+            // Create new user.
             $user = User::create([
                 'first_name' => $data['firstName'],
                 'last_name' => $data['lastName'],
@@ -66,7 +66,7 @@ class UserService
                 'confirmation_code' => md5(uniqid(mt_rand(), true)),
             ]);
 
-            // Checking whether the logged in user can assign the 'SUPER_ADMIN' role, if one is added
+            // Checking whether the logged in user can assign the 'SUPER_ADMIN' role, if one is added.
             if (isset($data['roles'])) {
                 foreach ($data['roles'] as $role) {
                     if ($role === config('access.roles.superadmin')) {
@@ -75,14 +75,14 @@ class UserService
                 }
             }
 
-            // Role synchronization, deleting old ones and adding new ones
+            // Role synchronization, deleting old ones and adding new ones.
             if (isset($data['roles']) && count($data['roles']) > 0) {
                 $user->syncRoles($data['roles']);
             } else {
                 $user->assignRole(config('access.roles.teacher'));
             }
 
-            // Zapis do historii
+            // Entry in the change history.
             $newData = User::where('id', '=', $user->id)->first();
             event(
                 new UserChanged(
@@ -92,7 +92,7 @@ class UserService
                 )
             );
 
-            // Send 'welcome' mail
+            // Send 'welcome' mail.
             event(new UserRegistered(
                 user: $user,
                 notificationLocale: $data['locale'],
@@ -107,7 +107,7 @@ class UserService
         return DB::transaction(function () use ($user, $data) {
             $oldData = User::with('settings')->where('id', '=', $user->id)->first();
 
-            // Update user
+            // Update user.
             $user->update([
                 'first_name' => $data['firstName'],
                 'last_name' => $data['lastName'],
@@ -116,13 +116,7 @@ class UserService
                 'email_verified_at' => $data['confirmed'] ? ($user->email_verified_at ?? Carbon::now()) : null,
             ]);
 
-            // Usunięcie aktualnych roli
-            // $user->roles()->detach();
-
-            // Przypisanie nowych roli
-            // $user->assignRole($data['roles']);
-
-            // Zapis do historii
+            // Entry in the change history.
             $newData = User::with('settings')->where('id', '=', $user->id)->first();
             event(
                 new UserChanged(
@@ -142,12 +136,12 @@ class UserService
             $oldData = User::with('settings')->where('id', '=', $user->id)->first();
             $oldData->history_comment = null;
 
-            // Update user password
+            // Update user password.
             $user->update([
                 'password' => Hash::make($data['password']),
             ]);
 
-            // Zapis do historii
+            // Entry in the change history.
             $newData = User::with('settings')->where('id', '=', $user->id)->first();
             $newData->history_comment = 'COMMENT_CHANGE_PASSWORD';
             event(
@@ -169,7 +163,7 @@ class UserService
         $user = User::findOrFail($userId);
         $user->delete();
 
-        // Zapis do historii
+        // Entry in the change history.
         $newData = User::withTrashed()->with('settings')->where('id', '=', $userId)->first();
         event(
             new UserChanged(
@@ -191,7 +185,7 @@ class UserService
 
         $newData = User::with('settings')->where('id', '=', $userId)->first();
 
-        // Zapis do historii
+        // Entry in the change history.
         $newData = User::withTrashed()->with('settings')->where('id', '=', $userId)->first();
         event(
             new UserChanged(
@@ -212,7 +206,7 @@ class UserService
             $roles = Role::whereIn('id', $selectedRolesIds)->get();
             $user->syncRoles($roles);
 
-            // Zapis do historii
+            // Entry in the change history.
             $newData = User::withTrashed()->with('settings', 'roles')->where('id', '=', $user->id)->first();
             event(
                 new UserChanged(
@@ -222,7 +216,7 @@ class UserService
                 )
             );
 
-            // Automatyczne wylogowanie
+            // Automatic logout.
             RefreshUserTokenHelper::shouldLogoutOnNextRequest($user->id);
 
             return $user->fresh('roles');
@@ -230,8 +224,8 @@ class UserService
     }
 
     /**
-     * Checks whether the user has the 'SUPER_ADMIN' permission
-     * If there is none, it returns an error
+     * Checks whether the user has the 'SUPER_ADMIN' permission.
+     * If there is none, it returns an error.
      */
     private function checkPermissionToSuperAdmin(?User $user): void
     {
