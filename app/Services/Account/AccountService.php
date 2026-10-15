@@ -17,6 +17,35 @@ use Intervention\Image\ImageManager;
 
 class AccountService
 {
+    public function changePassword(User $user, array $data): User
+    {
+        return DB::transaction(function () use ($user, $data) {
+            $oldData = User::with('settings')->where('id', '=', $user->id)->first();
+            $oldData->history_comment = null;
+
+            $res = $user->update([
+                'password' => Hash::make($data['newPassword']),
+            ]);
+
+            if (! $res) {
+                throw new Exception('CANT_CHANGE_PASSWORD');
+            }
+
+            // Entry in the change history.
+            $newData = User::with('settings')->where('id', '=', $user->id)->first();
+            $newData->history_comment = 'COMMENT_CHANGE_PASSWORD';
+            event(
+                new UserChanged(
+                    $oldData,
+                    $newData,
+                    EHistoryActionType::UPDATE
+                )
+            );
+
+            return $user;
+        });
+    }
+
     public function updateDetailsUser(User $user, array $data): User
     {
         return DB::transaction(function () use ($user, $data) {
@@ -111,42 +140,14 @@ class AccountService
         return "{$user->id}/avatar.webp";
     }
 
-    public function changePassword(User $user, array $data): User
-    {
-        return DB::transaction(function () use ($user, $data) {
-            $oldData = User::with('settings')->where('id', '=', $user->id)->first();
-            $oldData->history_comment = null;
-
-            $res = $user->update([
-                'password' => Hash::make($data['newPassword']),
-            ]);
-
-            if (! $res) {
-                throw new Exception('CANT_CHANGE_PASSWORD');
-            }
-
-            // Entry in the change history.
-            $newData = User::with('settings')->where('id', '=', $user->id)->first();
-            $newData->history_comment = 'COMMENT_CHANGE_PASSWORD';
-            event(
-                new UserChanged(
-                    $oldData,
-                    $newData,
-                    EHistoryActionType::UPDATE
-                )
-            );
-
-            return $user;
-        });
-    }
-
     public function getUserSettings(User $user)
     {
         $settings = $user->settings()
             ->pluck('setting_value', 'setting_name')
             ->toArray();
 
-        // Zwracane ustawienia użytkownika (tutuaj dodawaj nowe ustawienia)
+        // Returned user settings
+        // TODO: Add new user settings here
         return [
             EUserSettingName::WEB_NOTIFICATIONS->value => $settings[EUserSettingName::WEB_NOTIFICATIONS->value] ?? false,
             EUserSettingName::MAIL_NOTIFICATIONS->value => $settings[EUserSettingName::MAIL_NOTIFICATIONS->value] ?? false,

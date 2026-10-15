@@ -18,16 +18,9 @@ class RoleService
                 'name' => $data['name'],
             ]);
 
-            $permissionNames = collect($data['permissions'])
-                ->pluck('name')
-                ->filter()
-                ->values()
-                ->all();
+            $permissionNames = collect($data['permissions'])->filter()->values()->all();
 
-            $permissionIds = Permission::query()
-                ->whereIn('name', $permissionNames)
-                ->pluck('id')
-                ->all();
+            $permissionIds = Permission::query()->whereIn('name', $permissionNames)->pluck('id')->all();
 
             $role->syncPermissions($permissionIds);
 
@@ -54,18 +47,11 @@ class RoleService
                 'name' => $data['name'],
             ]);
 
-            $permissionNames = collect($data['permissions'])
-                ->pluck('name')
-                ->filter()
-                ->values()
-                ->all();
+            $permissionNames = collect($data['permissions'])->filter()->values()->all();
 
-            $permissionIds = Permission::query()
-                ->whereIn('name', $permissionNames)
-                ->pluck('id')
-                ->all();
+            $permissionIds = Permission::query()->whereIn('name', $permissionNames)->pluck('id')->all();
 
-            // Automatyczne wylogowanie
+            // Automatic logout.
             $role->users()
                 ->pluck('users.id')
                 ->each(
@@ -94,6 +80,7 @@ class RoleService
             $oldData = Role::with('permissions')->where('id', '=', $role->id)->first();
 
             $role->syncPermissions([]);
+
             $role->delete();
 
             // Entry in the change history.

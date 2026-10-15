@@ -19,9 +19,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PermissionController extends Controller
 {
-    /**
-     * @param  protected
-     */
     public function __construct(protected PermissionService $permissionService) {}
 
     protected function allowedSorts(): array
@@ -44,6 +41,17 @@ class PermissionController extends Controller
         ];
     }
 
+    public function getAll(Request $request): JsonResponse
+    {
+        $data = QueryBuilder::for(Permission::class)
+            ->defaultSort('name')
+            ->allowedSorts($this->allowedSorts())
+            ->allowedFilters($this->allowedFilters())
+            ->get();
+
+        return ResponseUtils::response(data: PermissionResource::collection($data));
+    }
+
     public function query(Request $request): JsonResponse
     {
         $pageSize = $request->pageSize ?? config('query-builder.default_page_size');
@@ -57,21 +65,7 @@ class PermissionController extends Controller
         return ResponseUtils::response(data: new PermissionQueryResource($data));
     }
 
-    public function getAll(Request $request): JsonResponse
-    {
-        $data = QueryBuilder::for(Permission::class)
-            ->defaultSort('name')
-            ->allowedSorts($this->allowedSorts())
-            ->allowedFilters($this->allowedFilters())
-            ->get();
-
-        return ResponseUtils::response(data: PermissionResource::collection($data));
-    }
-
-    /**
-     * @param  mixed  $permissionId
-     */
-    public function getById(Request $request, $permissionId): JsonResponse
+    public function getById(Request $request, int $permissionId): JsonResponse
     {
         $data = Permission::findOrFail($permissionId);
 
@@ -97,10 +91,7 @@ class PermissionController extends Controller
         }
     }
 
-    /**
-     * @param  mixed  $permissionId
-     */
-    public function update(Request $request, $permissionId): JsonResponse
+    public function update(Request $request, int $permissionId): JsonResponse
     {
         $permission = Permission::findOrFail($permissionId);
 
@@ -121,10 +112,7 @@ class PermissionController extends Controller
         }
     }
 
-    /**
-     * @param  mixed  $permissionId
-     */
-    public function delete(Request $request, $permissionId): JsonResponse
+    public function delete(Request $request, int $permissionId): JsonResponse
     {
         $permission = Permission::findOrFail($permissionId);
 

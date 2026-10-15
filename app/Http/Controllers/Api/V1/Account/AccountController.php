@@ -24,39 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AccountController extends Controller
 {
-    /**
-     * @param  protected
-     */
     public function __construct(protected AccountService $accountService) {}
-
-    public function updateDetailsUser(Request $request): JsonResponse
-    {
-        $user = User::findOrFail(Auth::id());
-
-        $validated = $request->validate([
-            'firstName' => ['required', 'string', 'max:191'],
-            'lastName' => ['required', 'string', 'max:191'],
-            'avatar' => [
-                'nullable',
-                'file',
-                'image',
-                'mimes:jpg,jpeg,png,webp,gif',
-                'max:5120',
-            ],
-            'removeAvatar' => ['nullable', 'in:true,false'],
-        ]);
-
-        try {
-            $user = $this->accountService->updateDetailsUser(user: $user, data: $validated);
-
-            return ResponseUtils::response(data: new UserResource($user));
-        } catch (\Throwable $exception) {
-            throw $exception;
-        } catch (Exception $exception) {
-            Log::error($exception->getMessage(), ['exception' => $exception]);
-            throw new ApiException(message: 'CANT_CHANGE_DETAILS', status: Response::HTTP_BAD_REQUEST);
-        }
-    }
 
     public function changePassword(Request $request): JsonResponse
     {
@@ -66,10 +34,10 @@ class AccountController extends Controller
             'oldPassword' => ['required'],
             'newPassword' => [
                 'required',
-                'same:password_confirmation',
+                'same:passwordConfirmation',
                 Rules\Password::defaults(),
             ],
-            'password_confirmation' => ['required'],
+            'passwordConfirmation' => ['required'],
         ]);
 
         if (! Hash::check($validated['oldPassword'], $user->password)) {
@@ -79,7 +47,7 @@ class AccountController extends Controller
         try {
             $this->accountService->changePassword(user: $user, data: $validated);
 
-            // Log out of all devices
+            // Log out of all devices.
             $this->revokeAllDevices($user);
 
             return ResponseUtils::response(data: new UserResource($user));
@@ -129,23 +97,32 @@ class AccountController extends Controller
         }
     }
 
-    public function deleteAccount(Request $request): JsonResponse
+    public function updateDetailsUser(Request $request): JsonResponse
     {
         $user = User::findOrFail(Auth::id());
 
-        $this->checkPermissionToSuperAdmin(user: $user);
+        $validated = $request->validate([
+            'firstName' => ['required', 'string', 'max:191'],
+            'lastName' => ['required', 'string', 'max:191'],
+            'avatar' => [
+                'nullable',
+                'file',
+                'image',
+                'mimes:jpg,jpeg,png,webp,gif',
+                'max:5120',
+            ],
+            'removeAvatar' => ['nullable', 'in:true,false'],
+        ]);
 
         try {
-            // Log out of all devices
-            $this->revokeAllDevices($user);
+            $user = $this->accountService->updateDetailsUser(user: $user, data: $validated);
 
-            // Delete account
-            $user->delete();
-
-            return ResponseUtils::response(data: []);
-        } catch (\Exception $exception) {
+            return ResponseUtils::response(data: new UserResource($user));
+        } catch (\Throwable $exception) {
+            throw $exception;
+        } catch (Exception $exception) {
             Log::error($exception->getMessage(), ['exception' => $exception]);
-            throw new ApiException(message: 'CANT_DELETE_ACCOUNT', status: Response::HTTP_BAD_REQUEST);
+            throw new ApiException(message: 'CANT_CHANGE_DETAILS', status: Response::HTTP_BAD_REQUEST);
         }
     }
 
@@ -161,8 +138,8 @@ class AccountController extends Controller
         $user = User::findOrFail(Auth::id());
 
         $validated = $request->validate([
-            'webNotifications' => ['sometimes', 'boolean'], // Powiadomienia w aplikacji
-            'mailNotifications' => ['sometimes', 'boolean'], // Powiadomienia email
+            'webNotifications' => ['sometimes', 'boolean'], // In-app notifications
+            'mailNotifications' => ['sometimes', 'boolean'], // Email notifications
         ]);
 
         try {
@@ -177,10 +154,7 @@ class AccountController extends Controller
         }
     }
 
-    /**
-     * @param  mixed  $user
-     */
-    private function revokeAllDevices($user)
+    private function revokeAllDevices(User $user)
     {
         // Log out of all devices
         $tokens = $user->tokens->pluck('id');
@@ -188,9 +162,29 @@ class AccountController extends Controller
         RefreshToken::whereIn('access_token_id', $tokens)->update(['revoked' => true]);
     }
 
+    public function deleteAccount(Request $request): JsonResponse
+    {
+        $user = User::findOrFail(Auth::id());
+
+        $this->checkPermissionToSuperAdmin(user: $user);
+
+        try {
+            // Log out of all devices.
+            $this->revokeAllDevices($user);
+
+            // Delete account.
+            $user->delete();
+
+            return ResponseUtils::response(data: []);
+        } catch (\Exception $exception) {
+            Log::error($exception->getMessage(), ['exception' => $exception]);
+            throw new ApiException(message: 'CANT_DELETE_ACCOUNT', status: Response::HTTP_BAD_REQUEST);
+        }
+    }
+
     /**
-     * Checks whether the user has the 'SUPER_ADMIN' permission
-     * If there is superadmin, it returns an error
+     * Checks whether the user has the 'SUPER_ADMIN' permission.
+     * If there is superadmin, it returns an error.
      */
     private function checkPermissionToSuperAdmin(User $user): void
     {

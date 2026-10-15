@@ -24,9 +24,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RoleController extends Controller
 {
-    /**
-     * @param  protected
-     */
     public function __construct(protected RoleService $roleService) {}
 
     protected function allowedSorts(): array
@@ -51,6 +48,17 @@ class RoleController extends Controller
         ];
     }
 
+    public function getAll(Request $request): JsonResponse
+    {
+        $data = QueryBuilder::for(Role::class)
+            ->defaultSort('name')
+            ->allowedSorts($this->allowedSorts())
+            ->allowedFilters($this->allowedFilters())
+            ->get();
+
+        return ResponseUtils::response(data: RoleResource::collection($data));
+    }
+
     public function query(Request $request): JsonResponse
     {
         $pageSize = $request->pageSize ?? config('query-builder.default_page_size');
@@ -64,28 +72,14 @@ class RoleController extends Controller
         return ResponseUtils::response(data: new RoleQueryResource($data));
     }
 
-    public function getAll(Request $request): JsonResponse
-    {
-        $data = QueryBuilder::for(Role::class)
-            ->defaultSort('name')
-            ->allowedSorts($this->allowedSorts())
-            ->allowedFilters($this->allowedFilters())
-            ->get();
-
-        return ResponseUtils::response(data: RoleResource::collection($data));
-    }
-
-    /**
-     * @param  mixed  $roleId
-     */
-    public function getById(Request $request, $roleId): JsonResponse
+    public function getById(Request $request, int $roleId): JsonResponse
     {
         $data = Role::findOrFail($roleId);
 
         return ResponseUtils::response(data: new RoleResource($data));
     }
 
-    public function getRoleHistory(Request $request, Role $role): JsonResponse
+    public function getHistory(Request $request, Role $role): JsonResponse
     {
         try {
             $data = RoleHistory::where('role_id', '=', $role->id)->orderBy('id', 'desc')->get();
@@ -118,10 +112,7 @@ class RoleController extends Controller
         }
     }
 
-    /**
-     * @param  mixed  $roleId
-     */
-    public function update(Request $request, $roleId): JsonResponse
+    public function update(Request $request, int $roleId): JsonResponse
     {
         $role = Role::findOrFail($roleId);
 
@@ -142,10 +133,7 @@ class RoleController extends Controller
         }
     }
 
-    /**
-     * @param  mixed  $roleId
-     */
-    public function delete(Request $request, $roleId): JsonResponse
+    public function delete(Request $request, int $roleId): JsonResponse
     {
         $role = Role::findOrFail($roleId);
 

@@ -11,6 +11,5 @@ Route::prefix('v1/permission')->middleware(['auth:api', ShouldLogoutOnNextReques
 
     Route::post('', [PermissionController::class, 'create'])->middleware('can:PERMISSIONS_CREATE');
     Route::put('{permissionId}', [PermissionController::class, 'update'])->middleware('can:PERMISSIONS_UPDATE')->whereNumber('permissionId');
-
     Route::delete('{permissionId}', [PermissionController::class, 'delete'])->middleware('can:PERMISSIONS_DELETE')->whereNumber('permissionId');
 });
