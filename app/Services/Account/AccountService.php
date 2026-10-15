@@ -146,8 +146,8 @@ class AccountService
             ->pluck('setting_value', 'setting_name')
             ->toArray();
 
-        // Returned user settings
-        // TODO: Add new user settings here
+        // Returned user settings.
+        // TODO: Add new user settings here.
         return [
             EUserSettingName::WEB_NOTIFICATIONS->value => $settings[EUserSettingName::WEB_NOTIFICATIONS->value] ?? false,
             EUserSettingName::MAIL_NOTIFICATIONS->value => $settings[EUserSettingName::MAIL_NOTIFICATIONS->value] ?? false,

@@ -4,25 +4,25 @@ namespace App\Enums;
 
 enum EPermissionName: string
 {
-    // Dostęp ogólny
+    // General access
     case BASE_SUPER_ADMIN_ACCESS = 'BASE_SUPER_ADMIN_ACCESS';
     case BASE_ADMIN_ACCESS = 'BASE_ADMIN_ACCESS';
     case BASE_TEACHER_ACCESS = 'BASE_TEACHER_ACCESS';
     case BASE_STUDENT_ACCESS = 'BASE_STUDENT_ACCESS';
 
-    // Użytkownicy
+    // Users
     case USERS_VIEW = 'USERS_VIEW';
     case USERS_CREATE = 'USERS_CREATE';
     case USERS_UPDATE = 'USERS_UPDATE';
     case USERS_DELETE = 'USERS_DELETE';
 
-    // Role
+    // Roles
     case ROLES_VIEW = 'ROLES_VIEW';
     case ROLES_CREATE = 'ROLES_CREATE';
     case ROLES_UPDATE = 'ROLES_UPDATE';
     case ROLES_DELETE = 'ROLES_DELETE';
 
-    // Uprawnienia
+    // Permissions
     case PERMISSIONS_VIEW = 'PERMISSIONS_VIEW';
     case PERMISSIONS_CREATE = 'PERMISSIONS_CREATE';
     case PERMISSIONS_UPDATE = 'PERMISSIONS_UPDATE';

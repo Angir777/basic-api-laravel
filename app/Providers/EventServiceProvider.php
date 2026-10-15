@@ -11,14 +11,14 @@ use Illuminate\Support\ServiceProvider;
 class EventServiceProvider extends ServiceProvider
 {
     protected $listen = [
-        // Historia zmian na modelu 'Role'
-        RoleChanged::class => [
-            RoleSaveChangeHistory::class,
-        ],
-
-        // Historia zmian na modelu 'User'
+        // Change history for the 'User' model.
         UserChanged::class => [
             UserSaveChangeHistory::class,
+        ],
+
+        // Change history for the 'Role' model.
+        RoleChanged::class => [
+            RoleSaveChangeHistory::class,
         ],
     ];
 }

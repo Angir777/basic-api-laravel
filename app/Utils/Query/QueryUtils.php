@@ -4,7 +4,7 @@ namespace App\Utils\Query;
 
 class QueryUtils
 {
-    // Funkcja zamieniająca nam property na snake_case dla bazy danych pgSQL
+    // A function that converts a property to snake_case for a pgSQL database.
     public static function snakeCase($value): string
     {
         $value = preg_replace('/\s+/u', '', ucwords($value));

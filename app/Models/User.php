@@ -81,7 +81,7 @@ class User extends Authenticatable implements Auditable
      * Relationships
      */
 
-    // User settings
+    // User settings.
     public function settings(): HasMany
     {
         return $this->hasMany(UserSettings::class);
