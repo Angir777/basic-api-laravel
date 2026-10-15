@@ -46,7 +46,7 @@ class PermissionController extends Controller
 
     public function query(Request $request): JsonResponse
     {
-        $pageSize = $request->page_size ?? config('query-builder.default_page_size');
+        $pageSize = $request->pageSize ?? config('query-builder.default_page_size');
 
         $data = QueryBuilder::for(Permission::class)
             ->defaultSort('name')
@@ -92,7 +92,7 @@ class PermissionController extends Controller
         } catch (ApiException $exception) {
             throw $exception;
         } catch (\Throwable $exception) {
-            Log::error($exception->getMessage(), $exception->getTrace());
+            Log::error($exception->getMessage(), ['exception' => $exception]);
             throw new ApiException(message: 'CANT_CREATE_PERMISSION', status: Response::HTTP_BAD_REQUEST);
         }
     }
@@ -116,7 +116,7 @@ class PermissionController extends Controller
         } catch (ApiException $exception) {
             throw $exception;
         } catch (\Throwable $exception) {
-            Log::error($exception->getMessage(), $exception->getTrace());
+            Log::error($exception->getMessage(), ['exception' => $exception]);
             throw new ApiException(message: 'CANT_UPDATE_PERMISSION', status: Response::HTTP_BAD_REQUEST);
         }
     }
@@ -135,7 +135,7 @@ class PermissionController extends Controller
         } catch (ApiException $exception) {
             throw $exception;
         } catch (\Throwable $exception) {
-            Log::error($exception->getMessage(), $exception->getTrace());
+            Log::error($exception->getMessage(), ['exception' => $exception]);
             throw new ApiException(message: 'CANT_DELETE_PERMISSION', status: Response::HTTP_BAD_REQUEST);
         }
     }

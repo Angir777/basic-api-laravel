@@ -22,7 +22,7 @@ class ShouldLogoutOnNextRequestMiddleware
     {
         $user = $request->user();
 
-        // Sprawdzamy, czy użytkownik ma zostać wylogowany w celu przeładowania uprawnień
+        // We check whether the user should be logged out in order to reload their permissions.
         if ($user->should_logout_on_next_request) {
             throw new HttpResponseException(response()->json([
                 'message' => 'SHOULD_LOGOUT_ON_NEXT',

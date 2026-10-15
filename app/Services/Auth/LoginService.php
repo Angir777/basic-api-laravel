@@ -39,7 +39,7 @@ class LoginService
             throw $exception;
         } catch (\Throwable $exception) {
             // Other errors.
-            Log::error($exception->getMessage(), $exception->getTrace());
+            Log::error($exception->getMessage(), ['exception' => $exception]);
             throw new ApiException(
                 message: 'GENERAL_ERROR',
                 status: Response::HTTP_INTERNAL_SERVER_ERROR

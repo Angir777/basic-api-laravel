@@ -53,7 +53,7 @@ class AccountController extends Controller
         } catch (\Throwable $exception) {
             throw $exception;
         } catch (Exception $exception) {
-            Log::error($exception->getMessage(), $exception->getTrace());
+            Log::error($exception->getMessage(), ['exception' => $exception]);
             throw new ApiException(message: 'CANT_CHANGE_DETAILS', status: Response::HTTP_BAD_REQUEST);
         }
     }
@@ -86,7 +86,7 @@ class AccountController extends Controller
         } catch (\Throwable $exception) {
             throw $exception;
         } catch (Exception $exception) {
-            Log::error($exception->getMessage(), $exception->getTrace());
+            Log::error($exception->getMessage(), ['exception' => $exception]);
             throw new ApiException(message: 'CANT_CHANGE_PASSWORD', status: Response::HTTP_BAD_REQUEST);
         }
     }
@@ -124,7 +124,7 @@ class AccountController extends Controller
 
             return ResponseUtils::response(data: []);
         } catch (\Exception $exception) {
-            Log::error($exception->getMessage(), $exception->getTrace());
+            Log::error($exception->getMessage(), ['exception' => $exception]);
             throw new ApiException(message: 'CANT_RESEND_CONFIRMATION_EMAIL', status: Response::HTTP_BAD_REQUEST);
         }
     }
@@ -144,7 +144,7 @@ class AccountController extends Controller
 
             return ResponseUtils::response(data: []);
         } catch (\Exception $exception) {
-            Log::error($exception->getMessage(), $exception->getTrace());
+            Log::error($exception->getMessage(), ['exception' => $exception]);
             throw new ApiException(message: 'CANT_DELETE_ACCOUNT', status: Response::HTTP_BAD_REQUEST);
         }
     }
@@ -172,7 +172,7 @@ class AccountController extends Controller
         } catch (\Throwable $exception) {
             throw $exception;
         } catch (Exception $exception) {
-            Log::error($exception->getMessage(), $exception->getTrace());
+            Log::error($exception->getMessage(), ['exception' => $exception]);
             throw new ApiException(message: 'CANT_UPDATE_SETTINGS', status: Response::HTTP_BAD_REQUEST);
         }
     }

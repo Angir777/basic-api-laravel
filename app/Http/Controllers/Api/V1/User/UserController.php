@@ -28,9 +28,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
-    /**
-     * @param  protected
-     */
     public function __construct(protected UserService $userService) {}
 
     protected function allowedSorts(): array
@@ -71,9 +68,20 @@ class UserController extends Controller
         ];
     }
 
+    public function getAll(Request $request): JsonResponse
+    {
+        $data = QueryBuilder::for(User::class)
+            ->defaultSort('email')
+            ->allowedSorts($this->allowedSorts())
+            ->allowedFilters($this->allowedFilters())
+            ->get();
+
+        return ResponseUtils::response(data: UserResource::collection($data));
+    }
+
     public function query(Request $request): JsonResponse
     {
-        $pageSize = $request->page_size ?? config('query-builder.default_page_size');
+        $pageSize = $request->pageSize ?? config('query-builder.default_page_size');
 
         $data = QueryBuilder::for(User::class)
             ->defaultSort('email')
@@ -86,7 +94,7 @@ class UserController extends Controller
 
     public function queryDeleted(Request $request): JsonResponse
     {
-        $pageSize = $request->page_size ?? config('query-builder.default_page_size');
+        $pageSize = $request->pageSize ?? config('query-builder.default_page_size');
 
         $data = QueryBuilder::for(User::onlyTrashed())
             ->defaultSort('email')
@@ -97,28 +105,14 @@ class UserController extends Controller
         return ResponseUtils::response(data: new UserQueryResource($data));
     }
 
-    public function getAll(Request $request): JsonResponse
-    {
-        $data = QueryBuilder::for(User::class)
-            ->defaultSort('email')
-            ->allowedSorts($this->allowedSorts())
-            ->allowedFilters($this->allowedFilters())
-            ->get();
-
-        return ResponseUtils::response(data: UserResource::collection($data));
-    }
-
-    /**
-     * @param  mixed  $userId
-     */
-    public function getById(Request $request, $userId): JsonResponse
+    public function getById(Request $request, string $userId): JsonResponse
     {
         $data = User::findOrFail($userId);
 
         return ResponseUtils::response(data: new UserResource($data));
     }
 
-    public function getUserHistory(Request $request, User $user): JsonResponse
+    public function getHistory(Request $request, User $user): JsonResponse
     {
         try {
             $data = UserHistory::where('user_id', '=', $user->id)->orderBy('id', 'desc')->get();
@@ -127,7 +121,7 @@ class UserController extends Controller
         } catch (ApiException $exception) {
             throw $exception;
         } catch (\Throwable $exception) {
-            Log::error($exception->getMessage(), $exception->getTrace());
+            Log::error($exception->getMessage(), ['exception' => $exception]);
             throw new ApiException(message: 'CANT_GET_HISTORY', status: Response::HTTP_UNPROCESSABLE_ENTITY);
         }
     }
@@ -139,6 +133,8 @@ class UserController extends Controller
             'lastName' => ['required', 'string', 'max:191'],
             'email' => ['required', 'string', 'email', 'max:191', Rule::unique('users')],
             'confirmed' => ['required', 'boolean'],
+            'roles' => ['nullable', 'array', 'size:1'],
+            'roles.*' => [Rule::in(['student', 'teacher'])],
             'locale' => ['required', Rule::in(['pl', 'es', 'en'])],
         ]);
 
@@ -149,15 +145,12 @@ class UserController extends Controller
         } catch (ApiException $exception) {
             throw $exception;
         } catch (\Throwable $exception) {
-            Log::error($exception->getMessage(), $exception->getTrace());
+            Log::error($exception->getMessage(), ['exception' => $exception]);
             throw new ApiException(message: 'CANT_CREATE_USER', status: Response::HTTP_BAD_REQUEST);
         }
     }
 
-    /**
-     * @param  mixed  $userId
-     */
-    public function update(Request $request, $userId): JsonResponse
+    public function update(Request $request, string $userId): JsonResponse
     {
         $user = User::findOrFail($userId);
 
@@ -175,15 +168,12 @@ class UserController extends Controller
         } catch (ApiException $exception) {
             throw $exception;
         } catch (\Throwable $exception) {
-            Log::error($exception->getMessage(), $exception->getTrace());
+            Log::error($exception->getMessage(), ['exception' => $exception]);
             throw new ApiException(message: 'CANT_UPDATE_USER', status: Response::HTTP_BAD_REQUEST);
         }
     }
 
-    /**
-     * @param  mixed  $userId
-     */
-    public function changePassword(Request $request, $userId): JsonResponse
+    public function changePassword(Request $request, string $userId): JsonResponse
     {
         $user = User::findOrFail($userId);
 
@@ -203,15 +193,12 @@ class UserController extends Controller
         } catch (ApiException $exception) {
             throw $exception;
         } catch (\Throwable $exception) {
-            Log::error($exception->getMessage(), $exception->getTrace());
+            Log::error($exception->getMessage(), ['exception' => $exception]);
             throw new ApiException(message: 'CANT_CHANGE_USER_PASSWORD', status: Response::HTTP_BAD_REQUEST);
         }
     }
 
-    /**
-     * @param  mixed  $userId
-     */
-    public function delete(Request $request, $userId): JsonResponse
+    public function delete(Request $request, string $userId): JsonResponse
     {
         try {
             $data = $this->userService->delete(userId: $userId);
@@ -220,15 +207,12 @@ class UserController extends Controller
         } catch (ApiException $exception) {
             throw $exception;
         } catch (\Throwable $exception) {
-            Log::error($exception->getMessage(), $exception->getTrace());
+            Log::error($exception->getMessage(), ['exception' => $exception]);
             throw new ApiException(message: 'CANT_DELETE_USER', status: Response::HTTP_BAD_REQUEST);
         }
     }
 
-    /**
-     * @param  mixed  $userId
-     */
-    public function restore(Request $request, $userId): JsonResponse
+    public function restore(Request $request, string $userId): JsonResponse
     {
         try {
             $data = $this->userService->restore(userId: $userId);
@@ -237,7 +221,7 @@ class UserController extends Controller
         } catch (ApiException $exception) {
             throw $exception;
         } catch (\Throwable $exception) {
-            Log::error($exception->getMessage(), $exception->getTrace());
+            Log::error($exception->getMessage(), ['exception' => $exception]);
             throw new ApiException(message: 'CANT_RESTORE_USER', status: Response::HTTP_BAD_REQUEST);
         }
     }
@@ -254,7 +238,7 @@ class UserController extends Controller
         } catch (ApiException $exception) {
             throw $exception;
         } catch (\Throwable $exception) {
-            Log::error($exception->getMessage(), $exception->getTrace());
+            Log::error($exception->getMessage(), ['exception' => $exception]);
             throw new ApiException(message: 'CANT_ATTACH_ROLE_USER', status: Response::HTTP_BAD_REQUEST);
         }
     }

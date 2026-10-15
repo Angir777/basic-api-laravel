@@ -53,7 +53,7 @@ class RoleController extends Controller
 
     public function query(Request $request): JsonResponse
     {
-        $pageSize = $request->page_size ?? config('query-builder.default_page_size');
+        $pageSize = $request->pageSize ?? config('query-builder.default_page_size');
 
         $data = QueryBuilder::for(Role::class)
             ->defaultSort('name')
@@ -94,7 +94,7 @@ class RoleController extends Controller
         } catch (ApiException $exception) {
             throw $exception;
         } catch (\Throwable $exception) {
-            Log::error($exception->getMessage(), $exception->getTrace());
+            Log::error($exception->getMessage(), ['exception' => $exception]);
             throw new ApiException(message: 'CANT_GET_HISTORY', status: Response::HTTP_UNPROCESSABLE_ENTITY);
         }
     }
@@ -113,7 +113,7 @@ class RoleController extends Controller
         } catch (ApiException $exception) {
             throw $exception;
         } catch (\Throwable $exception) {
-            Log::error($exception->getMessage(), $exception->getTrace());
+            Log::error($exception->getMessage(), ['exception' => $exception]);
             throw new ApiException(message: 'CANT_CREATE_ROLE', status: Response::HTTP_BAD_REQUEST);
         }
     }
@@ -137,7 +137,7 @@ class RoleController extends Controller
         } catch (ApiException $exception) {
             throw $exception;
         } catch (\Throwable $exception) {
-            Log::error($exception->getMessage(), $exception->getTrace());
+            Log::error($exception->getMessage(), ['exception' => $exception]);
             throw new ApiException(message: 'CANT_UPDATE_ROLE', status: Response::HTTP_BAD_REQUEST);
         }
     }
@@ -156,7 +156,7 @@ class RoleController extends Controller
         } catch (ApiException $exception) {
             throw $exception;
         } catch (\Throwable $exception) {
-            Log::error($exception->getMessage(), $exception->getTrace());
+            Log::error($exception->getMessage(), ['exception' => $exception]);
             throw new ApiException(message: 'CANT_DELETE_ROLE', status: Response::HTTP_BAD_REQUEST);
         }
     }
@@ -170,7 +170,7 @@ class RoleController extends Controller
         } catch (ApiException $exception) {
             throw $exception;
         } catch (\Throwable $exception) {
-            Log::error($exception->getMessage(), $exception->getTrace());
+            Log::error($exception->getMessage(), ['exception' => $exception]);
             throw new ApiException(message: 'CANT_GET_PERMISSIONS', status: Response::HTTP_BAD_REQUEST);
         }
     }
