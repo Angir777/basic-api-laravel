@@ -253,3 +253,20 @@ Po wdrożeniu wykonaj `php artisan queue:restart`, aby workery podjęły nowy ko
 ./vendor/bin/sail pint --test
 ./vendor/bin/sail artisan route:list --path=api
 ```
+
+## Wgrywanie zmian produkcyjnie
+
+Skrypt sh/build-and-deploy.sh służy do odświeżenia aplikacji w środowisku produkcyjnym po wdrożeniu zmian.
+
+Przy pierwszym uruchomieniu:
+
+```bash
+chmod +x sh/build-and-deploy.sh
+./sh/build-and-deploy.sh
+```
+
+Kolejne uruchomienia:
+
+```bash
+./sh/build-and-deploy.sh
+```
