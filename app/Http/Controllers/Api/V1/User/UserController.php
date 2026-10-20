@@ -128,6 +128,10 @@ class UserController extends Controller
 
     public function create(Request $request): JsonResponse
     {
+        $request->merge([
+            'locale' => $request->header('Locale', 'pl'),
+        ]);
+
         $validated = $request->validate([
             'firstName' => ['required', 'string', 'max:191'],
             'lastName' => ['required', 'string', 'max:191'],

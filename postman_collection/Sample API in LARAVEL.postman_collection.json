@@ -237,7 +237,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"Doe\",\r\n    \"email\": \"john.doe@app.local\",\r\n    \"password\": \"Root1234\",\r\n    \"passwordConfirmation\": \"Root1234\",\r\n    \"acceptanceRegulations\": true,\r\n    \"roles\": [\"teacher\"],\r\n    \"locale\": \"pl\"\r\n}",
+              "raw": "{\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"Doe\",\r\n    \"email\": \"john.doe@app.local\",\r\n    \"password\": \"Root1234\",\r\n    \"passwordConfirmation\": \"Root1234\",\r\n    \"acceptanceRegulations\": true,\r\n    \"roles\": [\"teacher\"],\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -561,7 +561,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"firstName\": \"Andy\",\r\n    \"lastName\": \"Nowak\",\r\n    \"email\": \"andy.nowak@app.local\",\r\n    \"confirmed\": true,\r\n    \"roles\": [\"student\"],\r\n    \"locale\": \"pl\"\r\n}",
+              "raw": "{\r\n    \"firstName\": \"Andy\",\r\n    \"lastName\": \"Nowak\",\r\n    \"email\": \"andy.nowak@app.local\",\r\n    \"confirmed\": true,\r\n    \"roles\": [\"student\"],\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
