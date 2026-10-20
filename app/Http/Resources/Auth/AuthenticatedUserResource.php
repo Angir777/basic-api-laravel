@@ -24,6 +24,9 @@ class AuthenticatedUserResource extends JsonResource
             'permissions' => $this->getAllPermissions()->pluck('name')->toArray(),
             'roles' => $this->roles()->pluck('name')->toArray(),
             'avatarUrl' => $this->getAvatarUrl(),
+            'settings' => $this->settings->mapWithKeys(
+                fn ($setting) => [$setting->setting_name => $setting->setting_value]
+            )->toArray(),
         ];
     }
 
