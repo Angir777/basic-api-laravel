@@ -6,7 +6,7 @@ use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\Auth\ResetPasswordController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('auth')->group(function () {
+Route::prefix('v1/auth')->group(function () {
     Route::post('register', [RegisterController::class, 'register']);
     Route::get('confirm-account/{confirmationCode}', [RegisterController::class, 'confirmAccount']);
 

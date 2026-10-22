@@ -65,7 +65,7 @@ class ResetPasswordController extends Controller
             'password' => [
                 'required',
                 'string',
-                'confirmed',
+                'confirmed:passwordConfirmation',
                 Rules\Password::defaults(),
             ],
             'token' => ['required', 'string'],

@@ -68,11 +68,12 @@
               }
             },
             "url": {
-              "raw": "{{api_url}}/auth/login",
+              "raw": "{{api_url}}/v1/auth/login",
               "host": [
                 "{{api_url}}"
               ],
               "path": [
+                "v1",
                 "auth",
                 "login"
               ]
@@ -106,11 +107,12 @@
               }
             },
             "url": {
-              "raw": "{{api_url}}/auth/login",
+              "raw": "{{api_url}}/v1/auth/login",
               "host": [
                 "{{api_url}}"
               ],
               "path": [
+                "v1",
                 "auth",
                 "login"
               ]
@@ -145,11 +147,12 @@
               }
             },
             "url": {
-              "raw": "{{api_url}}/auth/logout",
+              "raw": "{{api_url}}/v1/auth/logout",
               "host": [
                 "{{api_url}}"
               ],
               "path": [
+                "v1",
                 "auth",
                 "logout"
               ]
@@ -167,21 +170,20 @@
             "header": [
               {
                 "key": "Content-Type",
-                "value": "application/json",
-                "type": "text"
+                "value": "application/json"
               },
               {
                 "key": "Accept",
-                "value": "application/json",
-                "type": "text"
+                "value": "application/json"
               }
             ],
             "url": {
-              "raw": "{{api_url}}/auth/admins-emails",
+              "raw": "{{api_url}}/v1/auth/admins-emails",
               "host": [
                 "{{api_url}}"
               ],
               "path": [
+                "v1",
                 "auth",
                 "admins-emails"
               ]
@@ -199,21 +201,20 @@
             "header": [
               {
                 "key": "Content-Type",
-                "value": "application/json",
-                "type": "text"
+                "value": "application/json"
               },
               {
                 "key": "Accept",
-                "value": "application/json",
-                "type": "text"
+                "value": "application/json"
               }
             ],
             "url": {
-              "raw": "{{api_url}}/auth/current-user",
+              "raw": "{{api_url}}/v1/auth/current-user",
               "host": [
                 "{{api_url}}"
               ],
               "path": [
+                "v1",
                 "auth",
                 "current-user"
               ]
@@ -237,7 +238,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"Doe\",\r\n    \"email\": \"john.doe@app.local\",\r\n    \"password\": \"Root1234\",\r\n    \"passwordConfirmation\": \"Root1234\",\r\n    \"acceptanceRegulations\": true,\r\n    \"roles\": [\"teacher\"],\r\n}",
+              "raw": "{\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"Doe\",\r\n    \"email\": \"john.doe@app.local\",\r\n    \"password\": \"Root1234\",\r\n    \"passwordConfirmation\": \"Root1234\",\r\n    \"acceptanceRegulations\": true,\r\n    \"roles\": [\"teacher\"]\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -245,11 +246,12 @@
               }
             },
             "url": {
-              "raw": "{{api_url}}/auth/register",
+              "raw": "{{api_url}}/v1/auth/register",
               "host": [
                 "{{api_url}}"
               ],
               "path": [
+                "v1",
                 "auth",
                 "register"
               ]
@@ -266,14 +268,15 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{api_url}}/auth/confirm-account/a23431b64b112fddb199261ddec99217",
+              "raw": "{{api_url}}/v1/auth/confirm-account/9301fadbb17936cb8c8be9f6f6485b90",
               "host": [
                 "{{api_url}}"
               ],
               "path": [
+                "v1",
                 "auth",
                 "confirm-account",
-                "a23431b64b112fddb199261ddec99217"
+                "9301fadbb17936cb8c8be9f6f6485b90"
               ]
             },
             "description": "The code is sent to the email address provided during registration."
@@ -307,11 +310,12 @@
               }
             },
             "url": {
-              "raw": "{{api_url}}/auth/send-reset-password-email",
+              "raw": "{{api_url}}/v1/auth/send-reset-password-email",
               "host": [
                 "{{api_url}}"
               ],
               "path": [
+                "v1",
                 "auth",
                 "send-reset-password-email"
               ]
@@ -338,7 +342,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"email\": \"john.doe@app.local\",\r\n    \"password\": \"Root5678\",\r\n    \"password_confirmation\": \"Root5678\",\r\n    \"token\": \"yNki0TE35QKZ7ThNv1inehOLXQocd2l1qTzWUiHMzLjbBHZ0yZRwYGFUVsEY\"\r\n}",
+              "raw": "{\r\n    \"email\": \"john.doe@app.local\",\r\n    \"password\": \"Root5678\",\r\n    \"passwordConfirmation\": \"Root5678\",\r\n    \"token\": \"yNki0TE35QKZ7ThNv1inehOLXQocd2l1qTzWUiHMzLjbBHZ0yZRwYGFUVsEY\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -346,11 +350,12 @@
               }
             },
             "url": {
-              "raw": "{{api_url}}/auth/finish-password-reset",
+              "raw": "{{api_url}}/v1/auth/finish-password-reset",
               "host": [
                 "{{api_url}}"
               ],
               "path": [
+                "v1",
                 "auth",
                 "finish-password-reset"
               ]
@@ -561,7 +566,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"firstName\": \"Andy\",\r\n    \"lastName\": \"Nowak\",\r\n    \"email\": \"andy.nowak@app.local\",\r\n    \"confirmed\": true,\r\n    \"roles\": [\"student\"],\r\n}",
+              "raw": "{\r\n    \"firstName\": \"Andy\",\r\n    \"lastName\": \"Nowak\",\r\n    \"email\": \"andy.nowak@app.local\",\r\n    \"confirmed\": true,\r\n    \"roles\": [\"student\"]\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -635,7 +640,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"password\": \"Root1234\",\r\n    \"password_confirmation\": \"Root1234\"\r\n}",
+              "raw": "{\r\n    \"password\": \"Root1234\",\r\n    \"passwordConfirmation\": \"Root1234\"\r\n}",
               "options": {
                 "raw": {
                   "language": "text"

@@ -185,7 +185,7 @@ class UserController extends Controller
             'password' => [
                 'required',
                 'string',
-                'confirmed',
+                'confirmed:passwordConfirmation',
                 Rules\Password::defaults(),
             ],
         ]);
