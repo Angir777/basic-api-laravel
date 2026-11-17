@@ -18,7 +18,12 @@ class RoleService
                 'name' => $data['name'],
             ]);
 
-            $permissionNames = collect($data['permissions'])->filter()->values()->all();
+            $permissionNames = collect($data['permissions'])
+                ->where('isSelected', true)
+                ->pluck('name')
+                ->filter()
+                ->values()
+                ->all();
 
             $permissionIds = Permission::query()->whereIn('name', $permissionNames)->pluck('id')->all();
 
@@ -47,7 +52,12 @@ class RoleService
                 'name' => $data['name'],
             ]);
 
-            $permissionNames = collect($data['permissions'])->filter()->values()->all();
+            $permissionNames = collect($data['permissions'])
+                ->where('isSelected', true)
+                ->pluck('name')
+                ->filter()
+                ->values()
+                ->all();
 
             $permissionIds = Permission::query()->whereIn('name', $permissionNames)->pluck('id')->all();
 
